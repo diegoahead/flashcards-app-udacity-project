@@ -7,14 +7,14 @@ import {
     Platform,
 } from 'react-native';
 import { connect } from 'react-redux'
-import { white, gray, purple } from '../utils/colors'
+import { white, gray, blue, green } from '../utils/colors'
 
-function AddCardBtn ({ onPress }) {
+function DeckDetailBtn ({ text, onPress, bgColor }) {
     return (
       <TouchableOpacity
-        style={Platform.OS === 'ios' ? styles.iosSubmitBtn : styles.AndroidSubmitBtn}
+        style={[styles.iosSubmitBtn, bgColor]}
         onPress={onPress}>
-        <Text style={styles.submitBtnText}>Add Card</Text>
+        <Text style={styles.submitBtnText}>{text}</Text>
       </TouchableOpacity>
     )
 }
@@ -31,15 +31,18 @@ class NewDeck extends Component {
 
     render(){
 
-        const { deckItem, deckId } = this.props
+        const { deckItem, deckId, state } = this.props
 
         return (
             <View style={styles.container}>
                 <Text style={styles.deckTitle}>{ deckItem.name }</Text>
                 <Text style={styles.cardsNumber}>{ deckItem.cards.length } cards</Text>
-
-                <AddCardBtn onPress={()=> this.props.navigation.navigate(
+                <DeckDetailBtn text="Add Card" bgColor={{backgroundColor: blue}} onPress={()=> this.props.navigation.navigate(
                     'NewCard',
+                    {deckId: deckId}
+                )} />
+                <DeckDetailBtn text="Start Quiz" bgColor={{backgroundColor: green}} onPress={()=> this.props.navigation.navigate(
+                    'Quiz',
                     {deckId: deckId}
                 )} />
                 
@@ -65,23 +68,12 @@ const styles = StyleSheet.create({
         color: gray,
     },
     iosSubmitBtn: {
-        backgroundColor: purple,
         padding: 10,
         borderRadius: 7,
         height: 45,
         marginLeft: 40,
         marginRight: 40,
-    },
-    AndroidSubmitBtn: {
-        backgroundColor: purple,
-        padding: 10,
-        paddingLeft: 30,
-        paddingRight: 30,
-        height: 45,
-        borderRadius: 2,
-        alignSelf: 'flex-end',
-        justifyContent: 'center',
-        alignItems: 'center',
+        marginBottom: 10,
     },
     submitBtnText: {
         color: white,

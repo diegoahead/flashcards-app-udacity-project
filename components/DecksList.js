@@ -40,7 +40,7 @@ class DeckList extends Component {
                         <View style={[styles.deckItem]} key={decks[deck].name}>
                             <TouchableOpacity onPress={()=> this.props.navigation.navigate(
                                 'DeckDetail',
-                                {deckId: deck}
+                                {deckId: decks[deck].name}
                             )}>
                                 <Text>{decks[deck].name}</Text>
                                 <Text>{decks[deck].cards.length} cards</Text>
@@ -48,7 +48,10 @@ class DeckList extends Component {
                         </View> 
                     ))
             
-                    : <View><Text>No decks, please add one</Text></View>
+                    : <View style={[styles.container,{flex:1}, styles.noDeckYet]}>
+                            <Text style={{fontSize: 18}}>It's seems quite empty here 🤷🏻‍♂ </Text>
+                            <Text style={{fontSize: 18}}>feel free to create your first deck! 😎 </Text>
+                        </View>
                     }
 
 
@@ -87,6 +90,11 @@ const styles = StyleSheet.create({
         height: 100,
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    noDeckYet: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 100
     }
   });
   

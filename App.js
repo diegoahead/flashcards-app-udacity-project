@@ -3,15 +3,17 @@ import { StyleSheet, Text, View, Platform, StatusBar } from 'react-native';
 import { createBottomTabNavigator, createStackNavigator } from 'react-navigation'
 import DecksList from './components/DecksList'
 import NewDeck from './components/NewDeck'
-import { purple, white } from './utils/colors'
+import { purple, white, blue } from './utils/colors'
 import { Constants } from 'expo'
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import DeckDetail from './components/DeckDetail'
 import NewCard from './components/NewCard'
+import Quiz from './components/Quiz'
 import reducer from './reducers'
 import middleware from './middleware'
+import { setLocalNotification } from './utils/helpers'
 
 const store = createStore(
   reducer, 
@@ -46,10 +48,10 @@ const Tabs = createBottomTabNavigator({
     header: null
   },
   tabBarOptions: {
-    activeTintColor: Platform.OS === 'ios' ? purple : white,
+    activeTintColor: blue,
     style: {
       height: 56,
-      backgroundColor: Platform.OS === 'ios' ? white : purple,
+      backgroundColor: white,
       shadowColor: 'rgba(0, 0, 0, 0.24)',
       shadowOffset: {
         width: 0,
@@ -85,12 +87,25 @@ const MainNavigator = createStackNavigator({
         backgroundColor: purple,
       }
     }
+  },
+  Quiz: {
+    screen: Quiz,
+    navigationOptions: {
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: purple,
+      }
+    }
   }
+
 })
 
 
 export default class App extends React.Component {
 
+  componentDidMount() {
+    setLocalNotification()
+  }
 
   render() {
     return (

@@ -10,7 +10,7 @@ import { StyleSheet,
      Keyboard
     } from 'react-native';
 import { saveDeckTitle } from '../utils/api'
-import { purple,white } from '../utils/colors'
+import { blue, white, green } from '../utils/colors'
 import { addDeck } from '../actions'
 import { connect } from 'react-redux'
 
@@ -22,12 +22,12 @@ const DismissKeyboard = ({ children }) => (
     </TouchableWithoutFeedback>
   )
 
-function SubmitBtn ({ onPress }) {
+function SubmitBtn ({ onPress, btnColor }) {
     return (
       <TouchableOpacity
-        style={Platform.OS === 'ios' ? styles.iosSubmitBtn : styles.AndroidSubmitBtn}
+        style={styles.iosSubmitBtn}
         onPress={onPress}>
-        <Text style={styles.submitBtnText}>SUBMIT</Text>
+        <Text style={styles.submitBtnText}>Create Deck</Text>
       </TouchableOpacity>
     )
 }
@@ -36,14 +36,12 @@ class NewDeck extends Component {
 
     state = {
         name: '',
-        category: '',
-        previousScore: 0,
         cards: []
       };
 
     submit = () => {
         const { name } = this.state
-        const { goBack } = this.props
+        const { goBack, navigation } = this.props
 
         const deck = {
             ...this.state,
@@ -58,8 +56,11 @@ class NewDeck extends Component {
         this.setState({
             name: ''
         })
-
-        goBack()
+        
+        navigation.navigate(
+            'DeckDetail',
+            {deckId: name}
+        )
     }
 
     render() {
@@ -70,7 +71,7 @@ class NewDeck extends Component {
                 <TextInput
                     editable = {true}
                     maxLength = {40}
-                    placeholder = {'Hello'}
+                    placeholder = {`Deck's title goes here`}
                     onChangeText={(name) => this.setState({name})}
                     value={name}
                     style={styles.textInput}
@@ -92,23 +93,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     iosSubmitBtn: {
-        backgroundColor: purple,
+        backgroundColor: green,
         padding: 10,
         borderRadius: 7,
         height: 45,
         marginLeft: 40,
         marginRight: 40,
-    },
-    AndroidSubmitBtn: {
-        backgroundColor: purple,
-        padding: 10,
-        paddingLeft: 30,
-        paddingRight: 30,
-        height: 45,
-        borderRadius: 2,
-        alignSelf: 'flex-end',
-        justifyContent: 'center',
-        alignItems: 'center',
     },
     submitBtnText: {
         color: white,

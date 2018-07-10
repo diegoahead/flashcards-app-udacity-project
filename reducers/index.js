@@ -24,25 +24,15 @@ function entries (state = initialState, action) {
         
       }
     case ADD_CARD_TO_DECK :
-
-      // console.log(...state)
-      const decks = state.decks
       return {
         ...state,
-        decks: Object.keys(state.decks).map(obj => {
-          if (decks[obj].name === action.deckId) {
-            const newObj = decks[obj];
-            newObj.cards = [...newObj.cards, action.card];
-            return newObj;
+        decks: {
+          ...state.decks,
+          [action.deckId]: {
+            ...state.decks[action.deckId],
+            cards: [...state.decks[action.deckId].cards, action.card]
           }
-          return decks[obj];
-        })
-
-
-        // [action.deckId]: {
-        //   ...action.deckId,
-        //   questions: [...state[action.deckId].questions.concat([action.cardTitle, action.cardAnswer])]
-        // }
+        }
       }
     default :
       return state
